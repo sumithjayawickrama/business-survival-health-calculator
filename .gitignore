@@ -1,0 +1,8 @@
+node_modules
+.next
+out
+.vitest
+*.tsbuildinfo
+tools/cloudflared
+tools/cloudflared.tgz
+.DS_Store
