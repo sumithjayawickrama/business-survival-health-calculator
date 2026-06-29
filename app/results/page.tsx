@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Badge, Card } from "@/components/ui";
@@ -70,6 +71,9 @@ export default function ResultsPage() {
 
   const plan = planActions[result.category];
   const answerMap = new Map(saved.answers.map((answer) => [answer.questionId, answer.score]));
+  const weakestDomains = [...result.domainResults].sort((a, b) => a.score - b.score).slice(0, 3);
+  const firstThirtyDayActions = plan.actions.slice(0, 3);
+  const supportMessage = getSupportMessage(result);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
@@ -106,6 +110,45 @@ export default function ResultsPage() {
               <p className="mt-3 text-muted">{result.categoryReason}</p>
               <p className="mt-4 text-sm font-semibold">Recommended review frequency: {result.reviewFrequency}</p>
             </div>
+          </div>
+        </Card>
+
+        <Card>
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-ember">Executive summary</p>
+          <h2 className="mt-3 font-serif text-3xl font-semibold">What management should focus on first</h2>
+          <div className="mt-5 grid gap-4 lg:grid-cols-2">
+            <SummaryPanel title="Immediate threats">
+              {result.criticalAlerts.length > 0 || result.highPriorityAlerts.length > 0 ? (
+                <ul className="space-y-2 text-sm text-muted">
+                  {[...result.criticalAlerts, ...result.highPriorityAlerts].slice(0, 4).map((question) => (
+                    <li key={question.id}>
+                      Q{question.number}: {question.text}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-muted">No critical or high-priority alerts were triggered from the answers entered.</p>
+              )}
+            </SummaryPanel>
+            <SummaryPanel title="Weakest three domains">
+              <ol className="list-decimal space-y-2 pl-5 text-sm text-muted">
+                {weakestDomains.map((domainResult) => (
+                  <li key={domainResult.domain.id}>
+                    {domainResult.domain.name}: {domainResult.score}% ({domainResult.riskLevel})
+                  </li>
+                ))}
+              </ol>
+            </SummaryPanel>
+            <SummaryPanel title="First 30-day actions">
+              <ol className="list-decimal space-y-2 pl-5 text-sm text-muted">
+                {firstThirtyDayActions.map((action) => (
+                  <li key={action}>{action}</li>
+                ))}
+              </ol>
+            </SummaryPanel>
+            <SummaryPanel title="Professional support signal">
+              <p className="text-sm text-muted">{supportMessage}</p>
+            </SummaryPanel>
           </div>
         </Card>
 
@@ -196,6 +239,28 @@ export default function ResultsPage() {
         </Card>
       </article>
     </main>
+  );
+}
+
+function getSupportMessage(result: AssessmentResult): string {
+  if (result.criticalAlerts.length > 0) {
+    return "Consider involving qualified legal, tax, accounting, safety or restructuring support for the specific critical risks identified.";
+  }
+  if (result.category === "Immediate Restructuring Plan") {
+    return "Management should consider structured external support if cash, compliance, people or operational issues cannot be controlled quickly.";
+  }
+  if (result.category === "Solid Strategy Development Plan") {
+    return "External facilitation may help convert the weak areas into a practical 90-day strategy-building programme.";
+  }
+  return "External support is optional. The main need is disciplined execution, review rhythm and accountability.";
+}
+
+function SummaryPanel({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <section className="rounded-lg border border-rule bg-paper p-4">
+      <h3 className="font-semibold">{title}</h3>
+      <div className="mt-3">{children}</div>
+    </section>
   );
 }
 

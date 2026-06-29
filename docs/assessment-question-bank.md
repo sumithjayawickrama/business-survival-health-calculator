@@ -13,6 +13,19 @@ Use this document to study the full assessment before making amendments.
 | 1 | Failing or largely unproven. |
 | 0 | Absent, broken or an immediate danger. |
 
+## Evidence Guidance
+
+Use this guidance to avoid emotional or optimistic scoring.
+
+| Score | Evidence standard |
+| ---: | --- |
+| 5 | There are current records, reports or routines. Management reviews them regularly and actions are completed. |
+| 4 | The practice is mostly consistent. Evidence exists, but a few reviews, owners or follow-up actions need tightening. |
+| 3 | Some evidence exists, but it is irregular, incomplete or too dependent on one person. |
+| 2 | The issue is known, but controls, reports or action owners are weak, late or not trusted. |
+| 1 | There is little reliable evidence. Management mainly relies on judgement, memory or informal discussion. |
+| 0 | The practice is absent, broken, unknown or already creating urgent exposure. |
+
 ## Alert Labels
 
 - Critical Survival Alert: a score of 0 or 1 forces the result to Immediate Restructuring Plan.

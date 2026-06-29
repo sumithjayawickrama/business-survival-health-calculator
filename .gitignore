@@ -3,6 +3,5 @@ node_modules
 out
 .vitest
 *.tsbuildinfo
-tools/cloudflared
-tools/cloudflared.tgz
+tools
 .DS_Store

@@ -11,6 +11,7 @@ const businessTypes = ["Manufacturing", "Trading", "Services", "Export", "Retail
 const employeeRanges = ["1-4", "5-20", "21-50", "51-100", "101-250", "251-500", "501-1,000", "More than 1,000"];
 const yearsOptions = ["Less than 1 year", "1-3 years", "4-10 years", "More than 10 years"];
 const roleOptions = ["Owner", "Director", "Manager", "Consultant", "Other"];
+const scoreOptions = [0, 1, 2, 3, 4, 5] as const;
 
 const emptyProfile: BusinessProfile = {
   businessName: "",
@@ -131,6 +132,9 @@ export default function AssessmentPage() {
             <div key={item.score} className="rounded-md border border-rule bg-cream p-3">
               <dt className="font-semibold">{item.score}: {item.label}</dt>
               <dd className="mt-1 text-sm text-muted">{item.description}</dd>
+              <dd className="mt-2 text-xs leading-5 text-muted">
+                <strong className="text-ink">Evidence guide:</strong> {item.evidence}
+              </dd>
             </div>
           ))}
         </dl>
@@ -154,7 +158,7 @@ export default function AssessmentPage() {
                   {question.number}. {question.text}
                 </legend>
                 <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-6">
-                  {[0, 1, 2, 3, 4, 5].map((score) => (
+                  {scoreOptions.map((score) => (
                     <button
                       type="button"
                       key={score}
@@ -168,6 +172,12 @@ export default function AssessmentPage() {
                     </button>
                   ))}
                 </div>
+                {selected !== undefined && (
+                  <p className="mt-3 rounded-md border border-rule bg-cream p-3 text-sm leading-6 text-muted">
+                    <strong className="text-ink">Evidence to support score {selected}:</strong>{" "}
+                    {scoreScale.find((item) => item.score === selected)?.evidence}
+                  </p>
+                )}
               </fieldset>
             );
           })}

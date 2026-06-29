@@ -237,12 +237,42 @@ export const diagnosticDomains: DiagnosticDomain[] = [
 export const allQuestions = diagnosticDomains.flatMap((domain) => domain.questions);
 
 export const scoreScale = [
-  { score: 5, label: "Strong and proven", description: "Current evidence shows this is working well." },
-  { score: 4, label: "Working well", description: "Only minor gaps exist." },
-  { score: 3, label: "Partly working", description: "A material weakness is developing." },
-  { score: 2, label: "Weak", description: "Serious risk exists and needs action." },
-  { score: 1, label: "Failing", description: "Failing or largely unproven." },
-  { score: 0, label: "Immediate danger", description: "Absent, broken or an immediate danger." }
+  {
+    score: 5,
+    label: "Strong and proven",
+    description: "Current evidence shows this is working well.",
+    evidence: "There are current records, reports or routines. Management reviews them regularly and actions are completed."
+  },
+  {
+    score: 4,
+    label: "Working well",
+    description: "Only minor gaps exist.",
+    evidence: "The practice is mostly consistent. Evidence exists, but a few reviews, owners or follow-up actions need tightening."
+  },
+  {
+    score: 3,
+    label: "Partly working",
+    description: "A material weakness is developing.",
+    evidence: "Some evidence exists, but it is irregular, incomplete or too dependent on one person."
+  },
+  {
+    score: 2,
+    label: "Weak",
+    description: "Serious risk exists and needs action.",
+    evidence: "The issue is known, but controls, reports or action owners are weak, late or not trusted."
+  },
+  {
+    score: 1,
+    label: "Failing",
+    description: "Failing or largely unproven.",
+    evidence: "There is little reliable evidence. Management mainly relies on judgement, memory or informal discussion."
+  },
+  {
+    score: 0,
+    label: "Immediate danger",
+    description: "Absent, broken or an immediate danger.",
+    evidence: "The practice is absent, broken, unknown or already creating urgent exposure."
+  }
 ] as const;
 
 export const planActions = {
