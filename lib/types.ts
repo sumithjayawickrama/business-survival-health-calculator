@@ -50,10 +50,22 @@ export interface AiAssessment {
   governanceControl?: Score;
 }
 
+export type ErpUseStatus = "yes" | "no";
+
+export interface ErpAssessment {
+  usesErp?: ErpUseStatus;
+  implementationStatus?: Score;
+  processDependence?: Score;
+  aiDataReadiness?: Score;
+  singlePageDashboard?: Score;
+  manualProcessReason?: string;
+}
+
 export interface SavedAssessment {
   profile: BusinessProfile;
   answers: AssessmentAnswer[];
   aiAssessment?: AiAssessment;
+  erpAssessment?: ErpAssessment;
   savedAt: string;
 }
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { calculateAiUtilisationResult } from "../lib/ai";
 import { diagnosticDomains, planActions } from "../lib/diagnostics";
+import { calculateErpUtilisationResult } from "../lib/erp";
 import { calculateAssessmentResult, getCategory, parseAnswers, serialiseAnswers } from "../lib/scoring";
 import type { AssessmentAnswer, Score } from "../lib/types";
 
@@ -99,5 +100,22 @@ describe("scoring engine", () => {
     expect(aiResult.completed).toBe(true);
     expect(aiResult.score).toBe(2.5);
     expect(aiResult.status).toBe("Early AI adoption");
+  });
+
+  it("calculates a separate ERP utilisation mark without changing survival score", () => {
+    const survivalResult = calculateAssessmentResult(answersWith(5));
+    const erpResult = calculateErpUtilisationResult({
+      usesErp: "yes",
+      implementationStatus: 3,
+      processDependence: 2,
+      aiDataReadiness: 4,
+      singlePageDashboard: 3,
+      manualProcessReason: "Some legacy approval work is still handled manually."
+    });
+
+    expect(survivalResult.overallScore).toBe(100);
+    expect(erpResult.completed).toBe(true);
+    expect(erpResult.score).toBe(3);
+    expect(erpResult.status).toBe("ERP under development");
   });
 });

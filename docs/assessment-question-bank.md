@@ -42,6 +42,18 @@ The app also asks four AI dropdown questions. These create a separate AI Utilisa
 
 Management should use this mark to decide whether to appoint an AI owner, deploy a manager or consultant, train staff, and create approved-use rules.
 
+## Separate ERP Utilisation Check
+
+The app also asks ERP utilisation questions. These create a separate ERP Utilisation Mark from 0 to 5. This mark does not change the 100-point Survival Health Score.
+
+1. Does the company use an ERP system? Answer yes if ERP is live or under implementation.
+2. ERP implementation maturity: from no ERP implementation to ERP optimised.
+3. ERP dependence versus manual work: from mostly manual to ERP as the single source of truth.
+4. ERP data used for AI-supported decisions: from no usable ERP data to an ERP-to-AI decision layer.
+5. Single-page management dashboard: from no dashboard to a single-page control tower.
+
+If manual processes are still used, the app asks why. Management should use this mark to decide whether ERP implementation, data quality, manual workarounds, AI-ready data or dashboard discipline need attention.
+
 ## Domain 1: Cash Flow and Liquidity
 
 Weight: 18%

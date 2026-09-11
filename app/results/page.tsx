@@ -7,9 +7,10 @@ import { useRouter } from "next/navigation";
 import { Badge, Card } from "@/components/ui";
 import { aiEvaluationFields, calculateAiUtilisationResult } from "@/lib/ai";
 import { allQuestions, disclaimer, planActions, privacyNote } from "@/lib/diagnostics";
+import { calculateErpUtilisationResult, erpEvaluationFields, erpUseOptions } from "@/lib/erp";
 import { calculateAssessmentResult } from "@/lib/scoring";
 import { deleteSavedAssessment, loadSavedAssessment } from "@/lib/storage";
-import type { AssessmentResult, SavedAssessment } from "@/lib/types";
+import type { AssessmentResult, ErpUseStatus, SavedAssessment } from "@/lib/types";
 
 const riskTone = {
   critical: "critical",
@@ -77,6 +78,8 @@ export default function ResultsPage() {
   const supportMessage = getSupportMessage(result);
   const aiAssessment = saved.aiAssessment;
   const aiResult = calculateAiUtilisationResult(saved.aiAssessment);
+  const erpAssessment = saved.erpAssessment;
+  const erpResult = calculateErpUtilisationResult(saved.erpAssessment);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
@@ -200,6 +203,42 @@ export default function ResultsPage() {
                       value={formatAiAnswer(field.id, aiAssessment)}
                     />
                   ))}
+                </dl>
+              )}
+            </div>
+          </div>
+        </Card>
+
+        <Card>
+          <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-ember">ERP utilisation mark</p>
+              <p className="mt-2 font-serif text-5xl font-semibold" aria-label={erpResult.score === null ? "ERP utilisation not assessed" : `ERP utilisation score ${erpResult.score} out of 5`}>
+                {erpResult.score === null ? "N/A" : `${erpResult.score}/5`}
+              </p>
+              <Badge tone={erpResult.score === null ? "neutral" : erpResult.score < 2 ? "critical" : erpResult.score < 3.5 ? "warning" : "positive"}>
+                {erpResult.status}
+              </Badge>
+            </div>
+            <div>
+              <h2 className="font-serif text-2xl font-semibold">ERP maturity and decision data</h2>
+              <p className="mt-3 text-sm leading-6 text-muted">{erpResult.explanation}</p>
+              <p className="mt-3 text-sm leading-6 text-muted">
+                <strong className="text-ink">Recommended ERP action:</strong> {erpResult.recommendedAction}
+              </p>
+              {erpAssessment && (
+                <dl className="mt-4 grid gap-3 md:grid-cols-2">
+                  <ProfileItem label="ERP system use" value={formatErpUse(erpAssessment.usesErp)} />
+                  {erpEvaluationFields.map((field) => (
+                    <ProfileItem
+                      key={field.id}
+                      label={field.label}
+                      value={formatErpAnswer(field.id, erpAssessment)}
+                    />
+                  ))}
+                  {erpAssessment.manualProcessReason && (
+                    <ProfileItem label="Manual process reason" value={erpAssessment.manualProcessReason} />
+                  )}
                 </dl>
               )}
             </div>
@@ -339,6 +378,18 @@ function ProfileItem({ label, value }: { label: string; value: string }) {
 function formatAiAnswer(fieldId: (typeof aiEvaluationFields)[number]["id"], aiAssessment: NonNullable<SavedAssessment["aiAssessment"]>): string {
   const score = aiAssessment[fieldId];
   const field = aiEvaluationFields.find((item) => item.id === fieldId);
+  const option = field?.options.find((item) => item.score === score);
+  return option ? `${option.score}/5 - ${option.label}` : "Not assessed";
+}
+
+function formatErpUse(value: ErpUseStatus | undefined): string {
+  const option = erpUseOptions.find((item) => item.value === value);
+  return option?.label ?? "Not assessed";
+}
+
+function formatErpAnswer(fieldId: (typeof erpEvaluationFields)[number]["id"], erpAssessment: NonNullable<SavedAssessment["erpAssessment"]>): string {
+  const score = erpAssessment[fieldId];
+  const field = erpEvaluationFields.find((item) => item.id === fieldId);
   const option = field?.options.find((item) => item.score === score);
   return option ? `${option.score}/5 - ${option.label}` : "Not assessed";
 }

@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { ButtonLink, Card } from "@/components/ui";
 import { aiEvaluationFields, calculateAiUtilisationResult } from "@/lib/ai";
 import { diagnosticDomains, scoreScale } from "@/lib/diagnostics";
+import { calculateErpUtilisationResult, erpEvaluationFields, erpUseOptions } from "@/lib/erp";
 import { loadSavedAssessment, saveAssessmentDraft } from "@/lib/storage";
-import type { AiAssessment, AssessmentAnswer, BusinessProfile, Score } from "@/lib/types";
+import type { AiAssessment, AssessmentAnswer, BusinessProfile, ErpAssessment, ErpUseStatus, Score } from "@/lib/types";
 
 const businessTypes = ["Manufacturing", "Trading", "Services", "Export", "Retail", "Group of Companies", "Other"];
 const employeeRanges = ["1-4", "5-20", "21-50", "51-100", "101-250", "251-500", "501-1,000", "More than 1,000"];
@@ -28,6 +29,7 @@ export default function AssessmentPage() {
   const [profile, setProfile] = useState<BusinessProfile>(emptyProfile);
   const [answers, setAnswers] = useState<AssessmentAnswer[]>([]);
   const [aiAssessment, setAiAssessment] = useState<AiAssessment>({});
+  const [erpAssessment, setErpAssessment] = useState<ErpAssessment>({});
   const [step, setStep] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [savedMessage, setSavedMessage] = useState("");
@@ -41,6 +43,7 @@ export default function AssessmentPage() {
       setProfile(saved.profile);
       setAnswers(saved.answers);
       setAiAssessment(saved.aiAssessment ?? {});
+      setErpAssessment(saved.erpAssessment ?? {});
     }
     setLoaded(true);
   }, []);
@@ -52,6 +55,7 @@ export default function AssessmentPage() {
   const currentStepComplete = currentDomain.questions.every((question) => answersById.has(question.id));
   const allComplete = diagnosticDomains.every((domain) => domain.questions.every((question) => answersById.has(question.id)));
   const aiResult = calculateAiUtilisationResult(aiAssessment);
+  const erpResult = calculateErpUtilisationResult(erpAssessment);
 
   function updateProfile(field: keyof BusinessProfile, value: string) {
     setProfile((current) => ({ ...current, [field]: value }));
@@ -71,8 +75,29 @@ export default function AssessmentPage() {
     }));
   }
 
+  function updateErpUse(value: string) {
+    setErpAssessment((current) => ({
+      ...current,
+      usesErp: value === "" ? undefined : (value as ErpUseStatus)
+    }));
+  }
+
+  function updateErpAssessment(field: keyof ErpAssessment, value: string) {
+    setErpAssessment((current) => ({
+      ...current,
+      [field]: value === "" ? undefined : (Number(value) as Score)
+    }));
+  }
+
+  function updateManualProcessReason(value: string) {
+    setErpAssessment((current) => ({
+      ...current,
+      manualProcessReason: value
+    }));
+  }
+
   function saveDraft() {
-    saveAssessmentDraft({ profile, answers, aiAssessment, savedAt: new Date().toISOString() });
+    saveAssessmentDraft({ profile, answers, aiAssessment, erpAssessment, savedAt: new Date().toISOString() });
     setSavedMessage("Saved in this browser.");
   }
 
@@ -163,6 +188,50 @@ export default function AssessmentPage() {
         </div>
         <p className="mt-4 rounded-md border border-rule bg-paper p-3 text-sm leading-6 text-muted">
           <strong className="text-ink">Recommended AI action:</strong> {aiResult.recommendedAction}
+        </p>
+      </Card>
+
+      <Card className="mb-6">
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div>
+            <h2 className="font-serif text-2xl font-semibold">ERP utilisation check</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-muted">
+              This gives a separate ERP mark. It checks whether ERP is used, implementation maturity, manual workarounds, AI-ready ERP data and single-page dashboard discipline.
+            </p>
+          </div>
+          <div className="rounded-lg border border-rule bg-paper p-3 text-sm">
+            <p className="font-semibold">ERP mark</p>
+            <p className="text-muted">{erpResult.score === null ? "Not assessed" : `${erpResult.score}/5 · ${erpResult.status}`}</p>
+          </div>
+        </div>
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <ErpUseField value={erpAssessment.usesErp} onChange={updateErpUse} />
+          {erpAssessment.usesErp === "yes" &&
+            erpEvaluationFields.map((field) => (
+              <ErpSelectField
+                key={field.id}
+                label={field.label}
+                helpText={field.helpText}
+                value={erpAssessment[field.id]}
+                options={field.options}
+                onChange={(value) => updateErpAssessment(field.id, value)}
+              />
+            ))}
+        </div>
+        {erpAssessment.usesErp === "yes" && erpAssessment.processDependence !== undefined && erpAssessment.processDependence < 5 && (
+          <label className="mt-4 block text-sm font-semibold" htmlFor="manual-process-reason">
+            If manual processes are still used, why?
+            <textarea
+              id="manual-process-reason"
+              className="mt-2 min-h-24 w-full rounded-lg border border-rule bg-paper px-3 py-3"
+              value={erpAssessment.manualProcessReason ?? ""}
+              onChange={(event) => updateManualProcessReason(event.target.value)}
+              placeholder="Example: legacy process, ERP data quality issue, staff habit, missing module, approval requirement..."
+            />
+          </label>
+        )}
+        <p className="mt-4 rounded-md border border-rule bg-paper p-3 text-sm leading-6 text-muted">
+          <strong className="text-ink">Recommended ERP action:</strong> {erpResult.recommendedAction}
         </p>
       </Card>
 
@@ -291,6 +360,56 @@ function AiSelectField({
       <span className="mt-1 block text-xs font-normal leading-5 text-muted">{helpText}</span>
       <select id={id} className="mt-2 w-full rounded-lg border border-rule bg-paper px-3 py-3" value={value ?? ""} onChange={(event) => onChange(event.target.value)}>
         <option value="">Select AI maturity...</option>
+        {options.map((option) => (
+          <option key={option.score} value={option.score}>
+            {option.score} - {option.label}
+          </option>
+        ))}
+      </select>
+      {selected && <span className="mt-2 block text-xs font-normal leading-5 text-muted">{selected.description}</span>}
+    </label>
+  );
+}
+
+function ErpUseField({ value, onChange }: { value: ErpUseStatus | undefined; onChange: (value: string) => void }) {
+  return (
+    <label className="block text-sm font-semibold" htmlFor="erp-use-status">
+      Does the company use an ERP system?
+      <span className="mt-1 block text-xs font-normal leading-5 text-muted">Choose yes if ERP is live or currently under implementation.</span>
+      <select id="erp-use-status" className="mt-2 w-full rounded-lg border border-rule bg-paper px-3 py-3" value={value ?? ""} onChange={(event) => onChange(event.target.value)}>
+        <option value="">Select yes or no...</option>
+        {erpUseOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {value && <span className="mt-2 block text-xs font-normal leading-5 text-muted">{erpUseOptions.find((option) => option.value === value)?.description}</span>}
+    </label>
+  );
+}
+
+function ErpSelectField({
+  label,
+  helpText,
+  value,
+  options,
+  onChange
+}: {
+  label: string;
+  helpText: string;
+  value: Score | undefined;
+  options: Array<{ score: Score; label: string; description: string }>;
+  onChange: (value: string) => void;
+}) {
+  const id = label.toLowerCase().replaceAll(" ", "-");
+  const selected = options.find((option) => option.score === value);
+  return (
+    <label className="block text-sm font-semibold" htmlFor={id}>
+      {label}
+      <span className="mt-1 block text-xs font-normal leading-5 text-muted">{helpText}</span>
+      <select id={id} className="mt-2 w-full rounded-lg border border-rule bg-paper px-3 py-3" value={value ?? ""} onChange={(event) => onChange(event.target.value)}>
+        <option value="">Select ERP maturity...</option>
         {options.map((option) => (
           <option key={option.score} value={option.score}>
             {option.score} - {option.label}

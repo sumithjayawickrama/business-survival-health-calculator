@@ -8,3 +8,4 @@
 - Used Tailwind CSS design tokens matching the requested warm professional palette.
 - Used Vitest for fast scoring-unit tests with TypeScript.
 - Added AI utilisation as a separate 0-to-5 mark instead of changing the 100-point Survival Health Score, so AI readiness can be reviewed without distorting the survival methodology or historical score comparison.
+- Added ERP utilisation as a separate 0-to-5 mark instead of changing the Survival Health Score, so ERP implementation maturity, manual workarounds, AI-ready data and dashboard discipline can be reviewed independently.

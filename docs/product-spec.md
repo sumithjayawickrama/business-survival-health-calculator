@@ -50,6 +50,18 @@ The assessment also includes a separate AI Utilisation Mark from 0 to 5. This ma
 
 The AI mark is shown separately on the results page so management can see whether AI adoption is absent, informal, managed or embedded.
 
+## ERP utilisation check
+
+The assessment also includes a separate ERP Utilisation Mark from 0 to 5. This mark does not change the 100-point Survival Health Score. It evaluates:
+
+- Whether the company uses an ERP system.
+- ERP implementation maturity, including under-implementation and completed stages.
+- Whether the company fully depends on ERP or still uses manual processes, with space to explain why.
+- Whether ERP data is ready for AI or analytics-supported management decisions.
+- Whether management follows a single-page dashboard.
+
+The ERP mark is shown separately on the results page so management can see whether ERP is absent, under implementation, partially trusted, managed or embedded into decision routines.
+
 ## Disclaimer
 
 The calculator is a management self-assessment tool and does not replace professional legal, tax, accounting, financial, investment, safety or regulatory advice.
