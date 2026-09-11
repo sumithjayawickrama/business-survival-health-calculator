@@ -90,8 +90,10 @@ export function calculateAiUtilisationResult(aiAssessment?: AiAssessment): AiUti
     };
   }
 
-  const completedScores = scores as Score[];
-  const score = Math.round((completedScores.reduce((sum, value) => sum + value, 0) / completedScores.length) * 10) / 10;
+  const completedScores = scores.filter((score): score is Score => score !== undefined);
+  let totalScore = 0;
+  for (const value of completedScores) totalScore += value;
+  const score = Math.round((totalScore / completedScores.length) * 10) / 10;
   if (score < 2) {
     return {
       completed,
