@@ -7,3 +7,4 @@
 - Used plain React state instead of a state management library because the assessment is a single-user, single-flow public tool.
 - Used Tailwind CSS design tokens matching the requested warm professional palette.
 - Used Vitest for fast scoring-unit tests with TypeScript.
+- Added AI utilisation as a separate 0-to-5 mark instead of changing the 100-point Survival Health Score, so AI readiness can be reviewed without distorting the survival methodology or historical score comparison.

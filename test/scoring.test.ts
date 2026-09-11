@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { calculateAiUtilisationResult } from "../lib/ai";
 import { diagnosticDomains, planActions } from "../lib/diagnostics";
 import { calculateAssessmentResult, getCategory, parseAnswers, serialiseAnswers } from "../lib/scoring";
 import type { AssessmentAnswer, Score } from "../lib/types";
@@ -83,5 +84,20 @@ describe("scoring engine", () => {
     expect(result.highPriorityAlerts.length).toBeGreaterThan(0);
     expect(result.domainResults).toHaveLength(10);
     expect(planActions[result.category].actions.length).toBeGreaterThan(0);
+  });
+
+  it("calculates a separate AI utilisation mark without changing survival score", () => {
+    const survivalResult = calculateAssessmentResult(answersWith(5));
+    const aiResult = calculateAiUtilisationResult({
+      usageMaturity: 2,
+      ownershipModel: 4,
+      capabilityBuilding: 3,
+      governanceControl: 1
+    });
+
+    expect(survivalResult.overallScore).toBe(100);
+    expect(aiResult.completed).toBe(true);
+    expect(aiResult.score).toBe(2.5);
+    expect(aiResult.status).toBe("Early AI adoption");
   });
 });

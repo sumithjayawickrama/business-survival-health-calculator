@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ButtonLink, Card } from "@/components/ui";
+import { aiEvaluationFields, calculateAiUtilisationResult } from "@/lib/ai";
 import { diagnosticDomains, scoreScale } from "@/lib/diagnostics";
 import { loadSavedAssessment, saveAssessmentDraft } from "@/lib/storage";
-import type { AssessmentAnswer, BusinessProfile, Score } from "@/lib/types";
+import type { AiAssessment, AssessmentAnswer, BusinessProfile, Score } from "@/lib/types";
 
 const businessTypes = ["Manufacturing", "Trading", "Services", "Export", "Retail", "Group of Companies", "Other"];
 const employeeRanges = ["1-4", "5-20", "21-50", "51-100", "101-250", "251-500", "501-1,000", "More than 1,000"];
@@ -26,6 +27,7 @@ export default function AssessmentPage() {
   const router = useRouter();
   const [profile, setProfile] = useState<BusinessProfile>(emptyProfile);
   const [answers, setAnswers] = useState<AssessmentAnswer[]>([]);
+  const [aiAssessment, setAiAssessment] = useState<AiAssessment>({});
   const [step, setStep] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [savedMessage, setSavedMessage] = useState("");
@@ -38,6 +40,7 @@ export default function AssessmentPage() {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setProfile(saved.profile);
       setAnswers(saved.answers);
+      setAiAssessment(saved.aiAssessment ?? {});
     }
     setLoaded(true);
   }, []);
@@ -48,6 +51,7 @@ export default function AssessmentPage() {
   const profileComplete = Boolean(profile.businessType && profile.employeeRange && profile.yearsInOperation && profile.country && profile.userRole);
   const currentStepComplete = currentDomain.questions.every((question) => answersById.has(question.id));
   const allComplete = diagnosticDomains.every((domain) => domain.questions.every((question) => answersById.has(question.id)));
+  const aiResult = calculateAiUtilisationResult(aiAssessment);
 
   function updateProfile(field: keyof BusinessProfile, value: string) {
     setProfile((current) => ({ ...current, [field]: value }));
@@ -60,8 +64,15 @@ export default function AssessmentPage() {
     });
   }
 
+  function updateAiAssessment(field: keyof AiAssessment, value: string) {
+    setAiAssessment((current) => ({
+      ...current,
+      [field]: value === "" ? undefined : (Number(value) as Score)
+    }));
+  }
+
   function saveDraft() {
-    saveAssessmentDraft({ profile, answers, savedAt: new Date().toISOString() });
+    saveAssessmentDraft({ profile, answers, aiAssessment, savedAt: new Date().toISOString() });
     setSavedMessage("Saved in this browser.");
   }
 
@@ -123,6 +134,36 @@ export default function AssessmentPage() {
           <TextField label="Country" value={profile.country} onChange={(value) => updateProfile("country", value)} />
           <SelectField label="User role" value={profile.userRole} options={roleOptions} onChange={(value) => updateProfile("userRole", value)} />
         </div>
+      </Card>
+
+      <Card className="mb-6">
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div>
+            <h2 className="font-serif text-2xl font-semibold">AI utilisation check</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-muted">
+              This gives a separate AI mark. It does not change the Survival Health Score, but it shows whether AI is being used with ownership, training and controls.
+            </p>
+          </div>
+          <div className="rounded-lg border border-rule bg-paper p-3 text-sm">
+            <p className="font-semibold">AI mark</p>
+            <p className="text-muted">{aiResult.score === null ? "Not assessed" : `${aiResult.score}/5 · ${aiResult.status}`}</p>
+          </div>
+        </div>
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          {aiEvaluationFields.map((field) => (
+            <AiSelectField
+              key={field.id}
+              label={field.label}
+              helpText={field.helpText}
+              value={aiAssessment[field.id]}
+              options={field.options}
+              onChange={(value) => updateAiAssessment(field.id, value)}
+            />
+          ))}
+        </div>
+        <p className="mt-4 rounded-md border border-rule bg-paper p-3 text-sm leading-6 text-muted">
+          <strong className="text-ink">Recommended AI action:</strong> {aiResult.recommendedAction}
+        </p>
       </Card>
 
       <details className="mb-6 rounded-lg border border-rule bg-paper p-4">
@@ -225,6 +266,38 @@ function SelectField({ label, value, options, onChange }: { label: string; value
           </option>
         ))}
       </select>
+    </label>
+  );
+}
+
+function AiSelectField({
+  label,
+  helpText,
+  value,
+  options,
+  onChange
+}: {
+  label: string;
+  helpText: string;
+  value: Score | undefined;
+  options: Array<{ score: Score; label: string; description: string }>;
+  onChange: (value: string) => void;
+}) {
+  const id = label.toLowerCase().replaceAll(" ", "-");
+  const selected = options.find((option) => option.score === value);
+  return (
+    <label className="block text-sm font-semibold" htmlFor={id}>
+      {label}
+      <span className="mt-1 block text-xs font-normal leading-5 text-muted">{helpText}</span>
+      <select id={id} className="mt-2 w-full rounded-lg border border-rule bg-paper px-3 py-3" value={value ?? ""} onChange={(event) => onChange(event.target.value)}>
+        <option value="">Select AI maturity...</option>
+        {options.map((option) => (
+          <option key={option.score} value={option.score}>
+            {option.score} - {option.label}
+          </option>
+        ))}
+      </select>
+      {selected && <span className="mt-2 block text-xs font-normal leading-5 text-muted">{selected.description}</span>}
     </label>
   );
 }

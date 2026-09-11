@@ -31,6 +31,17 @@ Use this guidance to avoid emotional or optimistic scoring.
 - Critical Survival Alert: a score of 0 or 1 forces the result to Immediate Restructuring Plan.
 - High-Priority Risk Alert: a score of 0 or 1 is highlighted, but does not automatically override the result category.
 
+## Separate AI Utilisation Check
+
+The app also asks four AI dropdown questions. These create a separate AI Utilisation Mark from 0 to 5. This mark does not change the 100-point Survival Health Score.
+
+1. Current AI utilisation: from no AI use to AI embedded in core workflows.
+2. AI manager or consultant deployment: from no accountable owner to an executive-sponsored AI programme.
+3. AI capability and training: from no awareness to a continuous AI capability system.
+4. AI governance and data safety: from no controls to a controlled AI operating model.
+
+Management should use this mark to decide whether to appoint an AI owner, deploy a manager or consultant, train staff, and create approved-use rules.
+
 ## Domain 1: Cash Flow and Liquidity
 
 Weight: 18%

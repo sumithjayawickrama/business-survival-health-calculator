@@ -43,9 +43,17 @@ export interface AssessmentAnswer {
   score: Score;
 }
 
+export interface AiAssessment {
+  usageMaturity?: Score;
+  ownershipModel?: Score;
+  capabilityBuilding?: Score;
+  governanceControl?: Score;
+}
+
 export interface SavedAssessment {
   profile: BusinessProfile;
   answers: AssessmentAnswer[];
+  aiAssessment?: AiAssessment;
   savedAt: string;
 }
 

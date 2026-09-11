@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Badge, Card } from "@/components/ui";
+import { aiEvaluationFields, calculateAiUtilisationResult } from "@/lib/ai";
 import { allQuestions, disclaimer, planActions, privacyNote } from "@/lib/diagnostics";
 import { calculateAssessmentResult } from "@/lib/scoring";
 import { deleteSavedAssessment, loadSavedAssessment } from "@/lib/storage";
@@ -74,6 +75,7 @@ export default function ResultsPage() {
   const weakestDomains = [...result.domainResults].sort((a, b) => a.score - b.score).slice(0, 3);
   const firstThirtyDayActions = plan.actions.slice(0, 3);
   const supportMessage = getSupportMessage(result);
+  const aiResult = calculateAiUtilisationResult(saved.aiAssessment);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
@@ -169,6 +171,38 @@ export default function ResultsPage() {
             <ProfileItem label="Country" value={saved.profile.country} />
             <ProfileItem label="User role" value={saved.profile.userRole} />
           </dl>
+        </Card>
+
+        <Card>
+          <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-ember">AI utilisation mark</p>
+              <p className="mt-2 font-serif text-5xl font-semibold" aria-label={aiResult.score === null ? "AI utilisation not assessed" : `AI utilisation score ${aiResult.score} out of 5`}>
+                {aiResult.score === null ? "N/A" : `${aiResult.score}/5`}
+              </p>
+              <Badge tone={aiResult.score === null ? "neutral" : aiResult.score < 2 ? "critical" : aiResult.score < 3.5 ? "warning" : "positive"}>
+                {aiResult.status}
+              </Badge>
+            </div>
+            <div>
+              <h2 className="font-serif text-2xl font-semibold">AI readiness and ownership</h2>
+              <p className="mt-3 text-sm leading-6 text-muted">{aiResult.explanation}</p>
+              <p className="mt-3 text-sm leading-6 text-muted">
+                <strong className="text-ink">Recommended AI action:</strong> {aiResult.recommendedAction}
+              </p>
+              {saved.aiAssessment && (
+                <dl className="mt-4 grid gap-3 md:grid-cols-2">
+                  {aiEvaluationFields.map((field) => (
+                    <ProfileItem
+                      key={field.id}
+                      label={field.label}
+                      value={formatAiAnswer(field.id, saved.aiAssessment)}
+                    />
+                  ))}
+                </dl>
+              )}
+            </div>
+          </div>
         </Card>
 
         <section>
@@ -299,4 +333,11 @@ function ProfileItem({ label, value }: { label: string; value: string }) {
       <dd className="mt-1 font-semibold">{value}</dd>
     </div>
   );
+}
+
+function formatAiAnswer(fieldId: (typeof aiEvaluationFields)[number]["id"], aiAssessment: NonNullable<SavedAssessment["aiAssessment"]>): string {
+  const score = aiAssessment[fieldId];
+  const field = aiEvaluationFields.find((item) => item.id === fieldId);
+  const option = field?.options.find((item) => item.score === score);
+  return option ? `${option.score}/5 - ${option.label}` : "Not assessed";
 }

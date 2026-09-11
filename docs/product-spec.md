@@ -39,6 +39,17 @@ Each question is scored from 0 to 5. Question contribution is `(score / 5) * que
 
 Critical Survival Alerts override the normal category and require an Immediate Restructuring Plan.
 
+## AI utilisation check
+
+The assessment also includes a separate AI Utilisation Mark from 0 to 5. This mark does not change the 100-point Survival Health Score. It evaluates:
+
+- Current AI utilisation.
+- Whether an AI manager, accountable owner or consultant is deployed.
+- AI capability and training.
+- AI governance and data safety.
+
+The AI mark is shown separately on the results page so management can see whether AI adoption is absent, informal, managed or embedded.
+
 ## Disclaimer
 
 The calculator is a management self-assessment tool and does not replace professional legal, tax, accounting, financial, investment, safety or regulatory advice.
