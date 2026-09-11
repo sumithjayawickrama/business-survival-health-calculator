@@ -75,6 +75,7 @@ export default function ResultsPage() {
   const weakestDomains = [...result.domainResults].sort((a, b) => a.score - b.score).slice(0, 3);
   const firstThirtyDayActions = plan.actions.slice(0, 3);
   const supportMessage = getSupportMessage(result);
+  const aiAssessment = saved.aiAssessment;
   const aiResult = calculateAiUtilisationResult(saved.aiAssessment);
 
   return (
@@ -190,13 +191,13 @@ export default function ResultsPage() {
               <p className="mt-3 text-sm leading-6 text-muted">
                 <strong className="text-ink">Recommended AI action:</strong> {aiResult.recommendedAction}
               </p>
-              {saved.aiAssessment && (
+              {aiAssessment && (
                 <dl className="mt-4 grid gap-3 md:grid-cols-2">
                   {aiEvaluationFields.map((field) => (
                     <ProfileItem
                       key={field.id}
                       label={field.label}
-                      value={formatAiAnswer(field.id, saved.aiAssessment)}
+                      value={formatAiAnswer(field.id, aiAssessment)}
                     />
                   ))}
                 </dl>

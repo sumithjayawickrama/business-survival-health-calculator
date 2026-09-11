@@ -90,7 +90,8 @@ export function calculateAiUtilisationResult(aiAssessment?: AiAssessment): AiUti
     };
   }
 
-  const score = Math.round((scores.reduce((sum, value) => sum + Number(value), 0) / scores.length) * 10) / 10;
+  const completedScores = scores as Score[];
+  const score = Math.round((completedScores.reduce((sum, value) => sum + value, 0) / completedScores.length) * 10) / 10;
   if (score < 2) {
     return {
       completed,
