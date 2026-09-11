@@ -22,7 +22,7 @@ The assessment has 10 domains, each with five questions. Domain weights total 10
 - Business Model and Market Position: 10%.
 - Operations and Supply Chain: 9%.
 - Leadership and Governance: 8%.
-- People, Culture and Mind Purification: 8%.
+- People, Culture and Leadership Conduct: 8%.
 - Risk, Compliance and Legal Control: 8%.
 - Digital, Data and Cyber Readiness: 5%.
 - Resilience, Improvement and Continuity: 10%.

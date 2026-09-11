@@ -1,6 +1,6 @@
 # Business Survival Health Calculator Question Bank
 
-Use this document to study the full assessment before making amendments.
+Use this document to study the full 360 diagnostic assessment before making amendments.
 
 ## Scoring Scale
 
@@ -35,17 +35,19 @@ Use this guidance to avoid emotional or optimistic scoring.
 
 Weight: 18%
 
-1. Critical Survival Alert: Can the company meet salary, supplier, bank and statutory payments for the next 90 days?
-2. Is a rolling 13-week cash-flow forecast reviewed every week?
-3. Are cash shortages identified early and acted on?
-4. Is there enough working capital for normal business operations?
-5. Critical Survival Alert: Is the business dependent on emergency borrowing, delayed payments or informal cash support to survive?
+Checks whether the business can meet near-term commitments and control cash pressure.
+
+1. Critical Survival Alert: Can the company meet salary, supplier, bank and statutory payments for the next 90 days without distress?
+2. Is a rolling 13-week cash-flow forecast updated, reviewed and acted on every week?
+3. Are cash shortages, covenant risks and funding gaps identified early with accountable actions?
+4. Is working capital actively controlled across receivables, inventory, payables and operating cash needs?
+5. Critical Survival Alert: Can the business operate without relying on emergency borrowing, delayed payments or informal cash support?
 
 Suggested actions:
 
 - Build a weekly 13-week cash-flow forecast.
-- Prioritise cash collection.
-- Review payment timing and non-essential expenditure.
+- Prioritise cash collection and payment discipline.
+- Review cash runway, funding headroom and non-essential expenditure.
 - Protect salary, supplier, debt and statutory obligations.
 - Escalate short-term liquidity gaps early.
 
@@ -53,159 +55,177 @@ Suggested actions:
 
 Weight: 12%
 
-6. Does the company know its actual monthly profit or loss?
-7. Are gross margins measured by product, service, customer or business unit?
-8. Are expenses reviewed against an approved budget?
-9. Critical Survival Alert: Are receivables collected within agreed credit terms?
-10. Are debt, inventory and capital expenditure properly controlled for the business?
+Reviews profit visibility, margins, cash conversion, cost discipline and financial control.
+
+6. Does management receive a reliable monthly profit-and-loss, balance sheet and cash view?
+7. Are gross margin, contribution margin and unit economics measured by product, service, customer or business unit?
+8. Are budgets, cost leakage, discounts and overhead variances reviewed with corrective action?
+9. Critical Survival Alert: Are receivables, overdue accounts and disputed invoices collected within agreed credit terms?
+10. Are debt, inventory, capital expenditure and financial covenants controlled before they create pressure?
 
 Suggested actions:
 
 - Produce a reliable monthly profit-and-loss report.
-- Measure margins by product, customer or business unit.
-- Review loss-making work.
-- Control debt, inventory and capital spending.
+- Measure margins, cash conversion and working capital by activity.
+- Review loss-making work and hidden cost leakage.
+- Control debt, inventory, capital spending and covenant exposure.
 - Strengthen financial approval controls.
 
 ## Domain 3: Sales and Customer Strength
 
 Weight: 12%
 
-11. Does the company have a reliable sales pipeline?
-12. Is there a realistic monthly sales forecast?
-13. Are prices based on cost, customer value and required margin?
-14. Does the company have enough repeat customers?
-15. High-Priority Risk Alert: Is the company protected from excessive dependence on one customer or a small number of customers?
+Tests demand quality, customer retention, pricing power, reputation and concentration risk.
+
+11. Does the company have a qualified sales pipeline with clear stages, owners, conversion rates and next actions?
+12. Is there a realistic monthly sales forecast based on evidence rather than hope?
+13. Are pricing, discounting and contract terms based on cost, customer value and required margin?
+14. Are customer retention, churn, complaints and service failures monitored and acted on?
+15. High-Priority Risk Alert: Is the company protected from excessive dependence on one customer, channel, tender or small customer group?
 
 Suggested actions:
 
 - Create a measurable sales pipeline.
-- Set monthly sales targets and forecasts.
-- Review pricing against cost and required margin.
-- Improve customer retention.
+- Set monthly sales, conversion, churn and retention targets.
+- Review pricing against cost, value, discounting and required margin.
+- Improve customer retention and service reliability.
 - Reduce concentration risk.
 
 ## Domain 4: Business Model and Market Position
 
 Weight: 10%
 
-16. Is the business clear about why customers choose it?
-17. Is demand for its main product or service stable or improving?
-18. Does the company regularly review competitor and market changes?
-19. Is the business model still commercially viable?
-20. Are major investments linked to a clear business strategy?
+Assesses competitive advantage, demand, market shifts, innovation and strategic investment discipline.
+
+16. Is the business clear about its competitive advantage and why customers choose it over alternatives?
+17. Is demand for the main product or service stable, profitable and supported by clear customer need?
+18. Does the company regularly review competitors, substitutes, customer behaviour, regulation and market shifts?
+19. Is the business model still commercially viable after considering costs, pricing power, channels and technology change?
+20. Are major investments, innovation projects and capacity decisions linked to a clear business strategy?
 
 Suggested actions:
 
 - Clarify why customers choose the business.
-- Review customer needs and competitor movements.
-- Test whether the business model remains viable.
-- Link investment to clear commercial priorities.
+- Review customer needs, substitutes and competitor movements.
+- Test whether the business model remains viable and differentiated.
+- Link investment, innovation and capacity choices to clear commercial priorities.
 
 ## Domain 5: Operations and Supply Chain
 
 Weight: 9%
 
-21. Are key processes documented and followed?
-22. Are quality failures, waste and rework measured and reduced?
-23. Are equipment, systems and facilities maintained before serious breakdowns occur?
-24. High-Priority Risk Alert: Are critical suppliers reliable and properly managed?
-25. Can the company deliver to customers on time and at the required quality?
+Reviews process control, productivity, quality, procurement, capacity and delivery reliability.
+
+21. Are critical processes, handovers and controls documented, followed and improved?
+22. Are quality failures, waste, rework, delays and productivity losses measured and reduced?
+23. Are capacity, equipment, systems and facilities maintained before bottlenecks or breakdowns occur?
+24. High-Priority Risk Alert: Are critical suppliers, procurement terms, lead times and substitute options actively managed?
+25. Can the company deliver to customers on time, in full, safely and at the required quality?
 
 Suggested actions:
 
 - Document critical processes.
-- Measure quality failure, waste, rework and delay.
-- Improve maintenance planning.
-- Review critical supplier exposure.
+- Measure quality failure, waste, rework, delay and productivity.
+- Improve maintenance, capacity and delivery planning.
+- Review procurement discipline and critical supplier exposure.
 - Strengthen on-time delivery.
 
 ## Domain 6: Leadership and Governance
 
 Weight: 8%
 
-26. Are strategic decisions made using facts rather than assumptions?
-27. Are responsibilities and decision rights clear?
-28. Are managers accountable for agreed actions and results?
-29. High-Priority Risk Alert: Can the business operate without the owner making every major decision?
-30. Is there a succession or continuity plan for key leaders?
+Checks governance discipline, decision quality, accountability, delegation and leadership continuity.
+
+26. Are strategic decisions made using facts, scenarios and risk evidence rather than assumptions?
+27. Are governance routines, decision rights and escalation paths clear across the business?
+28. Are managers held accountable for agreed actions, performance measures and deadlines?
+29. High-Priority Risk Alert: Can the business operate without the owner or one senior person making every major decision?
+30. Is there a succession, delegation and continuity plan for key leaders and critical roles?
 
 Suggested actions:
 
-- Define decision rights and accountabilities.
-- Use evidence in management decisions.
-- Reduce owner dependence.
-- Strengthen succession and leadership continuity.
+- Define decision rights, governance routines and accountabilities.
+- Use evidence, performance dashboards and risk facts in decisions.
+- Reduce owner dependence and single-person control.
+- Strengthen board discipline, succession and leadership continuity.
 - Track action completion.
 
-## Domain 7: People, Culture and Mind Purification
+## Domain 7: People, Culture and Leadership Conduct
 
 Weight: 8%
 
-31. Does the company have the right people in its key roles?
-32. Are performance expectations clear and reviewed?
-33. Is harmful conflict, blame, fear or unhealthy workplace politics actively controlled?
-34. Do leaders practise Mind Purification through self-discipline, reflection and responsible behaviour?
-35. Are employee turnover, absenteeism and skill risks monitored and acted on?
+Looks at capability, expectations, behaviour, ethical leadership, incentives and workforce risk.
+
+31. Does the company have capable people in key roles, with known skill gaps being closed?
+32. Are performance expectations, incentives and consequences clear, fair and reviewed?
+33. Is harmful conflict, blame, fear, harassment or unhealthy workplace politics actively controlled?
+34. Do leaders demonstrate ethical conduct, self-discipline, reflection and responsible behaviour under pressure?
+35. Are employee turnover, absenteeism, succession, capability and workforce availability risks monitored and acted on?
 
 Suggested actions:
 
 - Clarify roles, performance expectations and skills needs.
-- Reduce harmful blame, fear and conflict.
-- Monitor turnover and absenteeism.
-- Develop disciplined, responsible leadership behaviour.
-- Protect psychological safety.
+- Reduce harmful blame, fear, conflict and unethical behaviour.
+- Monitor turnover, absenteeism, capability gaps and succession risk.
+- Develop disciplined, responsible and self-aware leadership behaviour.
+- Protect psychological safety and constructive challenge.
 
 ## Domain 8: Risk, Compliance and Legal Control
 
 Weight: 8%
 
-36. Critical Survival Alert: Are tax, employment, statutory and regulatory obligations current?
-37. Are contracts, licences, insurance and compliance requirements reviewed?
-38. Critical Survival Alert: Are financial approvals and fraud controls in place and followed?
-39. Critical Survival Alert: Are health, safety and workplace risks actively managed?
-40. Are important legal or regulatory risks known, documented and tracked?
+Reviews statutory obligations, contracts, fraud controls, safety, insurance and enterprise risk.
+
+36. Critical Survival Alert: Are tax, employment, statutory, regulatory and filing obligations current and actively monitored?
+37. Are contracts, licences, insurance, claims and dispute exposures reviewed before they become serious?
+38. Critical Survival Alert: Are financial approvals, segregation of duties, fraud controls and related-party controls in place and followed?
+39. Critical Survival Alert: Are health, safety, workplace and environmental risks actively managed with incident follow-up?
+40. Are important legal, regulatory, reputation and enterprise risks known, documented, owned and tracked?
 
 Suggested actions:
 
 - Review statutory, tax, labour and regulatory obligations.
 - Strengthen fraud and approval controls.
-- Review contracts, insurance and licences.
-- Improve workplace safety.
-- Maintain a visible risk register.
+- Review contracts, insurance, licences and dispute exposure.
+- Improve workplace safety and incident controls.
+- Maintain a visible enterprise risk register.
 
 ## Domain 9: Digital, Data and Cyber Readiness
 
 Weight: 5%
 
-41. Does management receive accurate and timely business information?
-42. High-Priority Risk Alert: Are key business systems protected with appropriate user access controls?
-43. High-Priority Risk Alert: Are important records backed up and recoverable?
-44. Is customer, employee and financial data handled responsibly?
-45. Does technology support better decisions, productivity and customer service?
+Checks reporting quality, cyber hygiene, data protection, automation and technology value.
+
+41. Does management receive accurate, timely and decision-ready business information from trusted data sources?
+42. High-Priority Risk Alert: Are key business systems protected with appropriate access controls, password discipline and cyber hygiene?
+43. High-Priority Risk Alert: Are important records, systems and data backed up, tested and recoverable within acceptable time?
+44. Is customer, employee, supplier and financial data handled responsibly with privacy and retention controls?
+45. Does technology, automation or data analysis improve decisions, productivity, controls and customer service?
 
 Suggested actions:
 
 - Improve management information quality and speed.
-- Control system access.
-- Test backups and recovery.
-- Protect important data.
-- Use technology to improve decisions and productivity.
+- Control system access and cyber hygiene.
+- Test backups, recovery and incident response.
+- Protect customer, employee, supplier and financial data.
+- Use technology and automation to improve decisions and productivity.
 
 ## Domain 10: Resilience, Improvement and Continuity
 
 Weight: 10%
 
-46. High-Priority Risk Alert: Does the company have a tested response plan for a major disruption?
-47. High-Priority Risk Alert: Has it identified key-person, supplier, customer and system dependencies?
-48. Does the business solve root causes rather than repeatedly treating symptoms?
-49. Are improvement actions tracked until completion?
-50. Can the business adapt quickly when demand, costs, regulations or technology change?
+Measures disruption planning, dependencies, improvement discipline, adaptability and transformation capacity.
+
+46. High-Priority Risk Alert: Does the company have a tested response plan for major disruption, crisis communication and recovery?
+47. High-Priority Risk Alert: Has it identified key-person, supplier, customer, facility, funding and system dependencies?
+48. Does the business solve root causes rather than repeatedly treating symptoms and urgent issues?
+49. Are improvement, transformation and risk-reduction actions tracked until completion with accountable owners?
+50. Can the business adapt quickly when demand, costs, regulation, climate, supply or technology changes?
 
 Suggested actions:
 
 - Identify key business dependencies.
 - Develop and test disruption plans.
-- Solve root causes.
+- Solve root causes and remove repeat failures.
 - Track improvement actions to closure.
-- Review risks arising from changing markets, costs, technology and regulation.
+- Review risks arising from changing markets, costs, technology, climate and regulation.
