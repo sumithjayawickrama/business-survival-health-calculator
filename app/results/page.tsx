@@ -9,6 +9,7 @@ import { aiEvaluationFields, calculateAiUtilisationResult } from "@/lib/ai";
 import { allQuestions, disclaimer, planActions, privacyNote } from "@/lib/diagnostics";
 import { calculateErpUtilisationResult, erpEvaluationFields, erpUseOptions } from "@/lib/erp";
 import { calculateIsoDisciplineResult, isoDisciplineOptions } from "@/lib/iso";
+import { formatDomainConfidence, formatEvidenceStrength, validateDiagnosticQuality } from "@/lib/quality";
 import { calculateAssessmentResult } from "@/lib/scoring";
 import { deleteSavedAssessment, loadSavedAssessment } from "@/lib/storage";
 import type { AssessmentResult, ErpUseStatus, IsoDisciplineScore, SavedAssessment } from "@/lib/types";
@@ -83,6 +84,12 @@ export default function ResultsPage() {
   const erpResult = calculateErpUtilisationResult(saved.erpAssessment);
   const isoAssessment = saved.isoAssessment;
   const isoResult = calculateIsoDisciplineResult(saved.isoAssessment);
+  const answerEvidence = saved.answerEvidence ?? [];
+  const domainConfidence = saved.domainConfidence ?? [];
+  const evidenceMap = new Map(answerEvidence.map((item) => [item.questionId, item]));
+  const confidenceMap = new Map(domainConfidence.map((item) => [item.domainId, item]));
+  const qualityResult = validateDiagnosticQuality(saved.answers, answerEvidence, domainConfidence);
+  const lowConfidenceDomains = result.domainResults.filter((domainResult) => qualityResult.lowConfidenceDomainIds.includes(domainResult.domain.id));
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
@@ -178,6 +185,34 @@ export default function ResultsPage() {
             <ProfileItem label="Country" value={saved.profile.country} />
             <ProfileItem label="User role" value={saved.profile.userRole} />
           </dl>
+        </Card>
+
+        <Card>
+          <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-ember">Diagnostic reliability</p>
+              <p className="mt-2 font-serif text-4xl font-semibold">{qualityResult.overallReliability}</p>
+              <Badge tone={qualityResult.overallReliability === "Strong" ? "positive" : qualityResult.overallReliability === "Usable" ? "neutral" : "warning"}>
+                Evidence and confidence
+              </Badge>
+            </div>
+            <div>
+              <h2 className="font-serif text-2xl font-semibold">Evidence behind the score</h2>
+              <p className="mt-3 text-sm leading-6 text-muted">
+                This reliability view does not change the Survival Health Score. It shows whether answers were supported by evidence and whether management was confident in each diagnostic area.
+              </p>
+              <dl className="mt-4 grid gap-3 md:grid-cols-3">
+                <ProfileItem label="Evidence complete" value={qualityResult.evidenceComplete ? "Yes" : "No"} />
+                <ProfileItem label="Confidence complete" value={qualityResult.confidenceComplete ? "Yes" : "No"} />
+                <ProfileItem label="Weak evidence answers" value={String(qualityResult.lowEvidenceCount)} />
+              </dl>
+              {lowConfidenceDomains.length > 0 && (
+                <p className="mt-3 text-sm leading-6 text-muted">
+                  <strong className="text-ink">Low-confidence domains:</strong> {lowConfidenceDomains.map((item) => item.domain.name).join(", ")}.
+                </p>
+              )}
+            </div>
+          </div>
         </Card>
 
         <Card>
@@ -288,6 +323,10 @@ export default function ResultsPage() {
                   <div>
                     <h3 className="font-serif text-xl font-semibold">{domainResult.domain.name}</h3>
                     <p className="mt-2 text-sm text-muted">{domainResult.explanation}</p>
+                    <p className="mt-2 text-sm text-muted">
+                      <strong className="text-ink">Answer confidence:</strong> {formatDomainConfidence(confidenceMap.get(domainResult.domain.id)?.confidence)}
+                      {confidenceMap.get(domainResult.domain.id)?.note ? ` - ${confidenceMap.get(domainResult.domain.id)?.note}` : ""}
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="text-2xl font-bold">{domainResult.score}%</p>
@@ -300,6 +339,11 @@ export default function ResultsPage() {
                     {domainResult.domain.questions.map((question) => (
                       <li key={question.id}>
                         <strong className="text-ink">Q{question.number}: {answerMap.get(question.id)}/5.</strong> {question.text}
+                        <br />
+                        <span>
+                          Evidence: {formatEvidenceStrength(evidenceMap.get(question.id)?.strength)}
+                          {evidenceMap.get(question.id)?.note ? ` - ${evidenceMap.get(question.id)?.note}` : ""}
+                        </span>
                       </li>
                     ))}
                   </ul>

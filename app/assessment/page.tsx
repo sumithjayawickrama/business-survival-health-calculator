@@ -7,8 +7,22 @@ import { aiEvaluationFields, calculateAiUtilisationResult } from "@/lib/ai";
 import { diagnosticDomains, scoreScale } from "@/lib/diagnostics";
 import { calculateErpUtilisationResult, erpEvaluationFields, erpUseOptions } from "@/lib/erp";
 import { calculateIsoDisciplineResult, isoDisciplineOptions } from "@/lib/iso";
+import { domainConfidenceOptions, evidenceStrengthOptions } from "@/lib/quality";
 import { loadSavedAssessment, saveAssessmentDraft } from "@/lib/storage";
-import type { AiAssessment, AssessmentAnswer, BusinessProfile, ErpAssessment, ErpUseStatus, IsoAssessment, IsoDisciplineScore, Score } from "@/lib/types";
+import type {
+  AiAssessment,
+  AnswerEvidence,
+  AssessmentAnswer,
+  BusinessProfile,
+  DomainConfidence,
+  DomainConfidenceRating,
+  ErpAssessment,
+  ErpUseStatus,
+  EvidenceStrength,
+  IsoAssessment,
+  IsoDisciplineScore,
+  Score
+} from "@/lib/types";
 
 const businessTypes = ["Manufacturing", "Trading", "Services", "Export", "Retail", "Group of Companies", "Other"];
 const employeeRanges = ["1-4", "5-20", "21-50", "51-100", "101-250", "251-500", "501-1,000", "More than 1,000"];
@@ -32,6 +46,8 @@ export default function AssessmentPage() {
   const [aiAssessment, setAiAssessment] = useState<AiAssessment>({});
   const [erpAssessment, setErpAssessment] = useState<ErpAssessment>({});
   const [isoAssessment, setIsoAssessment] = useState<IsoAssessment>({});
+  const [answerEvidence, setAnswerEvidence] = useState<AnswerEvidence[]>([]);
+  const [domainConfidence, setDomainConfidence] = useState<DomainConfidenceRating[]>([]);
   const [step, setStep] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [savedMessage, setSavedMessage] = useState("");
@@ -47,16 +63,26 @@ export default function AssessmentPage() {
       setAiAssessment(saved.aiAssessment ?? {});
       setErpAssessment(saved.erpAssessment ?? {});
       setIsoAssessment(saved.isoAssessment ?? {});
+      setAnswerEvidence(saved.answerEvidence ?? []);
+      setDomainConfidence(saved.domainConfidence ?? []);
     }
     setLoaded(true);
   }, []);
 
   const currentDomain = diagnosticDomains[step];
   const answersById = useMemo(() => new Map(answers.map((answer) => [answer.questionId, answer.score])), [answers]);
+  const evidenceByQuestionId = useMemo(() => new Map(answerEvidence.map((item) => [item.questionId, item])), [answerEvidence]);
+  const confidenceByDomainId = useMemo(() => new Map(domainConfidence.map((item) => [item.domainId, item])), [domainConfidence]);
   const completedQuestions = answers.length;
   const profileComplete = Boolean(profile.businessType && profile.employeeRange && profile.yearsInOperation && profile.country && profile.userRole);
-  const currentStepComplete = currentDomain.questions.every((question) => answersById.has(question.id));
-  const allComplete = diagnosticDomains.every((domain) => domain.questions.every((question) => answersById.has(question.id)));
+  const currentStepComplete =
+    currentDomain.questions.every((question) => answersById.has(question.id) && Boolean(evidenceByQuestionId.get(question.id)?.strength)) &&
+    Boolean(confidenceByDomainId.get(currentDomain.id)?.confidence);
+  const allComplete = diagnosticDomains.every(
+    (domain) =>
+      domain.questions.every((question) => answersById.has(question.id) && Boolean(evidenceByQuestionId.get(question.id)?.strength)) &&
+      Boolean(confidenceByDomainId.get(domain.id)?.confidence)
+  );
   const aiResult = calculateAiUtilisationResult(aiAssessment);
   const erpResult = calculateErpUtilisationResult(erpAssessment);
   const isoResult = calculateIsoDisciplineResult(isoAssessment);
@@ -69,6 +95,40 @@ export default function AssessmentPage() {
     setAnswers((current) => {
       const existing = current.filter((answer) => answer.questionId !== questionId);
       return [...existing, { questionId, score }].sort((a, b) => Number(a.questionId.slice(1)) - Number(b.questionId.slice(1)));
+    });
+  }
+
+  function updateEvidenceStrength(questionId: string, value: string) {
+    setAnswerEvidence((current) => {
+      const existing = current.find((item) => item.questionId === questionId);
+      const next = current.filter((item) => item.questionId !== questionId);
+      if (value === "") return next;
+      return [...next, { questionId, strength: value as EvidenceStrength, note: existing?.note ?? "" }].sort((a, b) => Number(a.questionId.slice(1)) - Number(b.questionId.slice(1)));
+    });
+  }
+
+  function updateEvidenceNote(questionId: string, note: string) {
+    setAnswerEvidence((current) => {
+      const existing = current.find((item) => item.questionId === questionId);
+      const next = current.filter((item) => item.questionId !== questionId);
+      return [...next, { questionId, strength: existing?.strength ?? "none", note }].sort((a, b) => Number(a.questionId.slice(1)) - Number(b.questionId.slice(1)));
+    });
+  }
+
+  function updateDomainConfidence(domainId: string, value: string) {
+    setDomainConfidence((current) => {
+      const existing = current.find((item) => item.domainId === domainId);
+      const next = current.filter((item) => item.domainId !== domainId);
+      if (value === "") return next;
+      return [...next, { domainId, confidence: value as DomainConfidence, note: existing?.note ?? "" }];
+    });
+  }
+
+  function updateDomainConfidenceNote(domainId: string, note: string) {
+    setDomainConfidence((current) => {
+      const existing = current.find((item) => item.domainId === domainId);
+      const next = current.filter((item) => item.domainId !== domainId);
+      return [...next, { domainId, confidence: existing?.confidence ?? "low", note }];
     });
   }
 
@@ -107,7 +167,7 @@ export default function AssessmentPage() {
   }
 
   function saveDraft() {
-    saveAssessmentDraft({ profile, answers, aiAssessment, erpAssessment, isoAssessment, savedAt: new Date().toISOString() });
+    saveAssessmentDraft({ profile, answers, aiAssessment, erpAssessment, isoAssessment, answerEvidence, domainConfidence, savedAt: new Date().toISOString() });
     setSavedMessage("Saved in this browser.");
   }
 
@@ -298,6 +358,8 @@ export default function AssessmentPage() {
         <div className="mt-6 space-y-6">
           {currentDomain.questions.map((question) => {
             const selected = answersById.get(question.id);
+            const evidence = evidenceByQuestionId.get(question.id);
+            const selectedEvidence = evidenceStrengthOptions.find((option) => option.value === evidence?.strength);
             return (
               <fieldset key={question.id} className="rounded-lg border border-rule bg-paper p-4">
                 <legend className="font-semibold">
@@ -319,15 +381,84 @@ export default function AssessmentPage() {
                   ))}
                 </div>
                 {selected !== undefined && (
-                  <p className="mt-3 rounded-md border border-rule bg-cream p-3 text-sm leading-6 text-muted">
-                    <strong className="text-ink">Evidence to support score {selected}:</strong>{" "}
-                    {scoreScale.find((item) => item.score === selected)?.evidence}
-                  </p>
+                  <div className="mt-3 space-y-3 rounded-md border border-rule bg-cream p-3 text-sm leading-6 text-muted">
+                    <p>
+                      <strong className="text-ink">Evidence to support score {selected}:</strong>{" "}
+                      {scoreScale.find((item) => item.score === selected)?.evidence}
+                    </p>
+                    <label className="block font-semibold text-ink" htmlFor={`evidence-${question.id}`}>
+                      Evidence strength
+                      <select
+                        id={`evidence-${question.id}`}
+                        className="mt-2 w-full rounded-lg border border-rule bg-paper px-3 py-3 font-normal text-ink"
+                        value={evidence?.strength ?? ""}
+                        onChange={(event) => updateEvidenceStrength(question.id, event.target.value)}
+                      >
+                        <option value="">Select evidence strength...</option>
+                        {evidenceStrengthOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    {selectedEvidence && <p className="text-xs leading-5">{selectedEvidence.description}</p>}
+                    <label className="block font-semibold text-ink" htmlFor={`evidence-note-${question.id}`}>
+                      Evidence note optional
+                      <textarea
+                        id={`evidence-note-${question.id}`}
+                        className="mt-2 min-h-20 w-full rounded-lg border border-rule bg-paper px-3 py-3 font-normal text-ink"
+                        value={evidence?.note ?? ""}
+                        onChange={(event) => updateEvidenceNote(question.id, event.target.value)}
+                        placeholder="Example: report name, meeting rhythm, record checked, owner responsible..."
+                      />
+                    </label>
+                  </div>
                 )}
               </fieldset>
             );
           })}
         </div>
+
+        <fieldset className="mt-6 rounded-lg border border-rule bg-paper p-4">
+          <legend className="font-semibold">Confidence in this section</legend>
+          <p className="mt-2 text-sm leading-6 text-muted">
+            This does not change the score. It shows how reliable the answers are for this diagnostic area.
+          </p>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <label className="block text-sm font-semibold" htmlFor={`confidence-${currentDomain.id}`}>
+              Answer confidence
+              <select
+                id={`confidence-${currentDomain.id}`}
+                className="mt-2 w-full rounded-lg border border-rule bg-paper px-3 py-3"
+                value={confidenceByDomainId.get(currentDomain.id)?.confidence ?? ""}
+                onChange={(event) => updateDomainConfidence(currentDomain.id, event.target.value)}
+              >
+                <option value="">Select confidence...</option>
+                {domainConfidenceOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {confidenceByDomainId.get(currentDomain.id)?.confidence && (
+                <span className="mt-2 block text-xs font-normal leading-5 text-muted">
+                  {domainConfidenceOptions.find((option) => option.value === confidenceByDomainId.get(currentDomain.id)?.confidence)?.description}
+                </span>
+              )}
+            </label>
+            <label className="block text-sm font-semibold" htmlFor={`confidence-note-${currentDomain.id}`}>
+              Confidence note optional
+              <textarea
+                id={`confidence-note-${currentDomain.id}`}
+                className="mt-2 min-h-24 w-full rounded-lg border border-rule bg-paper px-3 py-3"
+                value={confidenceByDomainId.get(currentDomain.id)?.note ?? ""}
+                onChange={(event) => updateDomainConfidenceNote(currentDomain.id, event.target.value)}
+                placeholder="Example: finance confirmed, operations disagreed, needs manager validation..."
+              />
+            </label>
+          </div>
+        </fieldset>
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <button className="rounded-lg border border-rule bg-cream px-5 py-3 font-semibold disabled:opacity-50" disabled={step === 0} onClick={() => setStep((value) => value - 1)}>

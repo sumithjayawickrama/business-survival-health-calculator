@@ -45,6 +45,12 @@ export default function MethodologyPage() {
           ))}
         </div>
       </Card>
+      <Card className="mt-6">
+        <h2 className="font-serif text-2xl font-semibold">Evidence and confidence</h2>
+        <p className="mt-3 text-sm leading-6 text-muted">
+          Each scored answer also asks for evidence strength, from no clear evidence to strong evidence. Each diagnostic area asks for answer confidence. These checks do not change the score; they show whether the diagnosis is well supported or needs management validation.
+        </p>
+      </Card>
       <p className="mt-6 rounded-lg border border-rule bg-cream p-4 text-sm text-muted">{disclaimer}</p>
     </PageShell>
   );

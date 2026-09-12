@@ -26,6 +26,23 @@ Use this guidance to avoid emotional or optimistic scoring.
 | 1 | There is little reliable evidence. Management mainly relies on judgement, memory or informal discussion. |
 | 0 | The practice is absent, broken, unknown or already creating urgent exposure. |
 
+## Diagnostic Reliability Checks
+
+Each scored answer also asks for evidence strength:
+
+- No clear evidence: the score is based mainly on memory, opinion or informal judgement.
+- Weak evidence: some evidence exists, but it is incomplete, old, informal or not regularly reviewed.
+- Moderate evidence: useful records, reports or routines exist, but ownership or follow-up could improve.
+- Strong evidence: current evidence exists, is reviewed, and leads to visible action.
+
+Each diagnostic domain also asks for answer confidence:
+
+- Low confidence: answers may be incomplete, uncertain or dependent on one person's view.
+- Medium confidence: answers are mostly reliable, but some evidence or management agreement is still missing.
+- High confidence: answers are supported by evidence and broadly reflect how the business actually works.
+
+These reliability checks do not change the 100-point Survival Health Score. They show whether the diagnosis is well supported or needs management validation.
+
 ## Alert Labels
 
 - Critical Survival Alert: a score of 0 or 1 forces the result to Immediate Restructuring Plan.
@@ -162,7 +179,7 @@ Reviews process control, productivity, quality, procurement, capacity and delive
 22. Are quality failures, waste, rework, delays and productivity losses measured and reduced?
 23. Are capacity, equipment, systems and facilities maintained before bottlenecks or breakdowns occur?
 24. High-Priority Risk Alert: Are critical suppliers, procurement terms, lead times and substitute options actively managed?
-25. Can the company deliver to customers on time, in full, safely and at the required quality?
+25. Can the company deliver to customers on time, in full, safely and at the required quality, using a safety process based on current risks, evidence and data instead of habit or past records only?
 
 Suggested actions:
 
@@ -178,11 +195,11 @@ Weight: 8%
 
 Checks governance discipline, decision quality, accountability, delegation and leadership continuity.
 
-26. Are strategic decisions made using facts, scenarios and risk evidence rather than assumptions?
-27. Are governance routines, decision rights and escalation paths clear across the business?
-28. Are managers held accountable for agreed actions, performance measures and deadlines?
-29. High-Priority Risk Alert: Can the business operate without the owner or one senior person making every major decision?
-30. Is there a succession, delegation and continuity plan for key leaders and critical roles?
+26. Does management use facts, risks and options before making important decisions?
+27. Does everyone know who can make decisions, who must approve them and when problems must be escalated?
+28. Do managers have clear actions, targets and deadlines, and are they checked?
+29. High-Priority Risk Alert: Can the business keep running if the owner or one senior person is away or not making every big decision?
+30. Are future leaders, deputies and backup plans ready for key roles?
 
 Suggested actions:
 

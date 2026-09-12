@@ -159,7 +159,7 @@ export const diagnosticDomains: DiagnosticDomain[] = [
       q("operations", "operations", 22, "Are quality failures, waste, rework, delays and productivity losses measured and reduced?"),
       q("operations", "operations", 23, "Are capacity, equipment, systems and facilities maintained before bottlenecks or breakdowns occur?"),
       q("operations", "operations", 24, "Are critical suppliers, procurement terms, lead times and substitute options actively managed?"),
-      q("operations", "operations", 25, "Can the company deliver to customers on time, in full, safely and at the required quality?")
+      q("operations", "operations", 25, "Can the company deliver to customers on time, in full, safely and at the required quality, using a safety process based on current risks, evidence and data instead of habit or past records only?")
     ]
   },
   {
@@ -169,11 +169,11 @@ export const diagnosticDomains: DiagnosticDomain[] = [
     weight: 8,
     guidance: actionGuidance.leadership,
     questions: [
-      q("leadership", "leadership", 26, "Are strategic decisions made using facts, scenarios and risk evidence rather than assumptions?"),
-      q("leadership", "leadership", 27, "Are governance routines, decision rights and escalation paths clear across the business?"),
-      q("leadership", "leadership", 28, "Are managers held accountable for agreed actions, performance measures and deadlines?"),
-      q("leadership", "leadership", 29, "Can the business operate without the owner or one senior person making every major decision?"),
-      q("leadership", "leadership", 30, "Is there a succession, delegation and continuity plan for key leaders and critical roles?")
+      q("leadership", "leadership", 26, "Does management use facts, risks and options before making important decisions?"),
+      q("leadership", "leadership", 27, "Does everyone know who can make decisions, who must approve them and when problems must be escalated?"),
+      q("leadership", "leadership", 28, "Do managers have clear actions, targets and deadlines, and are they checked?"),
+      q("leadership", "leadership", 29, "Can the business keep running if the owner or one senior person is away or not making every big decision?"),
+      q("leadership", "leadership", 30, "Are future leaders, deputies and backup plans ready for key roles?")
     ]
   },
   {

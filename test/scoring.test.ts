@@ -3,6 +3,7 @@ import { calculateAiUtilisationResult } from "../lib/ai";
 import { diagnosticDomains, planActions } from "../lib/diagnostics";
 import { calculateErpUtilisationResult } from "../lib/erp";
 import { calculateIsoDisciplineResult } from "../lib/iso";
+import { validateDiagnosticQuality } from "../lib/quality";
 import { calculateAssessmentResult, getCategory, parseAnswers, serialiseAnswers } from "../lib/scoring";
 import type { AssessmentAnswer, Score } from "../lib/types";
 
@@ -138,5 +139,21 @@ describe("scoring engine", () => {
     expect(isoResult.score).toBe(90);
     expect(isoResult.isFailureRisk).toBe(false);
     expect(isoResult.status).toBe("Acceptable ISO system discipline");
+  });
+
+  it("tracks evidence and confidence separately without changing survival score", () => {
+    const answers = answersWith(5);
+    const quality = validateDiagnosticQuality(
+      answers,
+      allQuestions.map((question) => ({ questionId: question.id, strength: "strong" })),
+      diagnosticDomains.map((domain) => ({ domainId: domain.id, confidence: "high" }))
+    );
+    const survivalResult = calculateAssessmentResult(answers);
+
+    expect(survivalResult.overallScore).toBe(100);
+    expect(quality.evidenceComplete).toBe(true);
+    expect(quality.confidenceComplete).toBe(true);
+    expect(quality.lowEvidenceCount).toBe(0);
+    expect(quality.overallReliability).toBe("Strong");
   });
 });

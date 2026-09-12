@@ -43,6 +43,22 @@ export interface AssessmentAnswer {
   score: Score;
 }
 
+export type EvidenceStrength = "none" | "weak" | "moderate" | "strong";
+
+export interface AnswerEvidence {
+  questionId: string;
+  strength: EvidenceStrength;
+  note?: string;
+}
+
+export type DomainConfidence = "low" | "medium" | "high";
+
+export interface DomainConfidenceRating {
+  domainId: string;
+  confidence: DomainConfidence;
+  note?: string;
+}
+
 export interface AiAssessment {
   usageMaturity?: Score;
   ownershipModel?: Score;
@@ -73,6 +89,8 @@ export interface SavedAssessment {
   aiAssessment?: AiAssessment;
   erpAssessment?: ErpAssessment;
   isoAssessment?: IsoAssessment;
+  answerEvidence?: AnswerEvidence[];
+  domainConfidence?: DomainConfidenceRating[];
   savedAt: string;
 }
 

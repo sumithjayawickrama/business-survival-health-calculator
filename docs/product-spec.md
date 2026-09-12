@@ -31,6 +31,12 @@ The assessment has 10 domains, each with five questions. Domain weights total 10
 
 Each question is scored from 0 to 5. Question contribution is `(score / 5) * question weight`, where question weight is the domain weight divided by five.
 
+## Diagnostic reliability layer
+
+Each scored answer also captures evidence strength: no clear evidence, weak evidence, moderate evidence or strong evidence. Each diagnostic domain also captures answer confidence: low, medium or high.
+
+Evidence and confidence do not change the 100-point Survival Health Score. They are shown separately on the results page to help management understand whether the diagnosis is well supported or needs validation.
+
 ## Result categories
 
 - 0.0% to 49.9%: Immediate Restructuring Plan.
