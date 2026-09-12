@@ -61,11 +61,18 @@ export interface ErpAssessment {
   manualProcessReason?: string;
 }
 
+export type IsoDisciplineScore = 0 | 25 | 50 | 70 | 85 | 90 | 95 | 100;
+
+export interface IsoAssessment {
+  systemDiscipline?: IsoDisciplineScore;
+}
+
 export interface SavedAssessment {
   profile: BusinessProfile;
   answers: AssessmentAnswer[];
   aiAssessment?: AiAssessment;
   erpAssessment?: ErpAssessment;
+  isoAssessment?: IsoAssessment;
   savedAt: string;
 }
 

@@ -54,6 +54,25 @@ The app also asks ERP utilisation questions. These create a separate ERP Utilisa
 
 If manual processes are still used, the app asks why. Management should use this mark to decide whether ERP implementation, data quality, manual workarounds, AI-ready data or dashboard discipline need attention.
 
+## Separate ISO System Discipline Check
+
+The app also asks one ISO discipline dropdown question. This creates a separate ISO System Discipline Mark from 0% to 100%. This mark does not change the 100-point Survival Health Score.
+
+Question: Does management and the company respect the ISO system?
+
+Dropdown scoring:
+
+- 0%: No ISO system.
+- 25%: Certificate only.
+- 50%: Partly followed.
+- 70%: Operational but inconsistent.
+- 85%: Mostly followed, below required discipline.
+- 90%: Minimum acceptable system discipline.
+- 95%: Strong ISO-led management.
+- 100%: ISO system runs the company.
+
+If the ISO mark is below 90%, the app shows a serious ISO system failure risk. The management message is that huge failure can be expected when the company does not respect the system, because procedures, evidence, corrective action and accountability may exist only on paper. Management should treat ISO as the operating discipline of the business, not just an audit or certificate requirement.
+
 ## Domain 1: Cash Flow and Liquidity
 
 Weight: 18%

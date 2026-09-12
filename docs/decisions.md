@@ -9,3 +9,4 @@
 - Used Vitest for fast scoring-unit tests with TypeScript.
 - Added AI utilisation as a separate 0-to-5 mark instead of changing the 100-point Survival Health Score, so AI readiness can be reviewed without distorting the survival methodology or historical score comparison.
 - Added ERP utilisation as a separate 0-to-5 mark instead of changing the Survival Health Score, so ERP implementation maturity, manual workarounds, AI-ready data and dashboard discipline can be reviewed independently.
+- Added ISO system discipline as a separate 0-to-100% threshold mark instead of changing the Survival Health Score, so below-90% system failure risk is clearly visible without distorting the core diagnostic weighting.

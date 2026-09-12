@@ -62,6 +62,12 @@ The assessment also includes a separate ERP Utilisation Mark from 0 to 5. This m
 
 The ERP mark is shown separately on the results page so management can see whether ERP is absent, under implementation, partially trusted, managed or embedded into decision routines.
 
+## ISO system discipline check
+
+The assessment also includes a separate ISO System Discipline Mark from 0% to 100%. This mark does not change the 100-point Survival Health Score. It evaluates whether management and teams respect the ISO system enough for it to run the company, not just support certificates, tenders or external audits.
+
+The ISO dropdown uses a 90% minimum discipline threshold. If the mark is below 90%, the results page shows a serious ISO system failure risk because the company may be certificate-led rather than system-led.
+
 ## Disclaimer
 
 The calculator is a management self-assessment tool and does not replace professional legal, tax, accounting, financial, investment, safety or regulatory advice.

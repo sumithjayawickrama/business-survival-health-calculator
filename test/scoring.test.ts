@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { calculateAiUtilisationResult } from "../lib/ai";
 import { diagnosticDomains, planActions } from "../lib/diagnostics";
 import { calculateErpUtilisationResult } from "../lib/erp";
+import { calculateIsoDisciplineResult } from "../lib/iso";
 import { calculateAssessmentResult, getCategory, parseAnswers, serialiseAnswers } from "../lib/scoring";
 import type { AssessmentAnswer, Score } from "../lib/types";
 
@@ -117,5 +118,25 @@ describe("scoring engine", () => {
     expect(erpResult.completed).toBe(true);
     expect(erpResult.score).toBe(3);
     expect(erpResult.status).toBe("ERP under development");
+  });
+
+  it("flags ISO discipline below 90% as a serious failure risk without changing survival score", () => {
+    const survivalResult = calculateAssessmentResult(answersWith(5));
+    const isoResult = calculateIsoDisciplineResult({ systemDiscipline: 85 });
+
+    expect(survivalResult.overallScore).toBe(100);
+    expect(isoResult.completed).toBe(true);
+    expect(isoResult.score).toBe(85);
+    expect(isoResult.isFailureRisk).toBe(true);
+    expect(isoResult.status).toBe("Serious ISO system failure risk");
+  });
+
+  it("accepts ISO discipline at 90% as the minimum acceptable threshold", () => {
+    const isoResult = calculateIsoDisciplineResult({ systemDiscipline: 90 });
+
+    expect(isoResult.completed).toBe(true);
+    expect(isoResult.score).toBe(90);
+    expect(isoResult.isFailureRisk).toBe(false);
+    expect(isoResult.status).toBe("Acceptable ISO system discipline");
   });
 });

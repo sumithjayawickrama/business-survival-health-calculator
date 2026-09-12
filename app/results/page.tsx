@@ -8,9 +8,10 @@ import { Badge, Card } from "@/components/ui";
 import { aiEvaluationFields, calculateAiUtilisationResult } from "@/lib/ai";
 import { allQuestions, disclaimer, planActions, privacyNote } from "@/lib/diagnostics";
 import { calculateErpUtilisationResult, erpEvaluationFields, erpUseOptions } from "@/lib/erp";
+import { calculateIsoDisciplineResult, isoDisciplineOptions } from "@/lib/iso";
 import { calculateAssessmentResult } from "@/lib/scoring";
 import { deleteSavedAssessment, loadSavedAssessment } from "@/lib/storage";
-import type { AssessmentResult, ErpUseStatus, SavedAssessment } from "@/lib/types";
+import type { AssessmentResult, ErpUseStatus, IsoDisciplineScore, SavedAssessment } from "@/lib/types";
 
 const riskTone = {
   critical: "critical",
@@ -80,6 +81,8 @@ export default function ResultsPage() {
   const aiResult = calculateAiUtilisationResult(saved.aiAssessment);
   const erpAssessment = saved.erpAssessment;
   const erpResult = calculateErpUtilisationResult(saved.erpAssessment);
+  const isoAssessment = saved.isoAssessment;
+  const isoResult = calculateIsoDisciplineResult(saved.isoAssessment);
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10">
@@ -245,6 +248,37 @@ export default function ResultsPage() {
           </div>
         </Card>
 
+        <Card>
+          <div className="grid gap-5 lg:grid-cols-[0.7fr_1.3fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-ember">ISO system discipline mark</p>
+              <p className="mt-2 font-serif text-5xl font-semibold" aria-label={isoResult.score === null ? "ISO system discipline not assessed" : `ISO system discipline score ${isoResult.score} percent`}>
+                {isoResult.score === null ? "N/A" : `${isoResult.score}%`}
+              </p>
+              <Badge tone={isoResult.score === null ? "neutral" : isoResult.isFailureRisk ? "critical" : "positive"}>
+                {isoResult.status}
+              </Badge>
+            </div>
+            <div>
+              <h2 className="font-serif text-2xl font-semibold">ISO management-system discipline</h2>
+              <p className="mt-3 text-sm leading-6 text-muted">{isoResult.explanation}</p>
+              {isoResult.isFailureRisk && (
+                <p className="mt-3 rounded-md border border-critical bg-critical/10 p-3 text-sm font-semibold leading-6 text-critical">
+                  Below 90% indicates serious ISO system failure risk. The company may be certificate-led instead of system-led.
+                </p>
+              )}
+              <p className="mt-3 text-sm leading-6 text-muted">
+                <strong className="text-ink">Recommended ISO action:</strong> {isoResult.recommendedAction}
+              </p>
+              {isoAssessment && (
+                <dl className="mt-4 grid gap-3 md:grid-cols-2">
+                  <ProfileItem label="ISO discipline level" value={formatIsoAnswer(isoAssessment.systemDiscipline)} />
+                </dl>
+              )}
+            </div>
+          </div>
+        </Card>
+
         <section>
           <h2 className="font-serif text-3xl font-semibold">Domain scorecards</h2>
           <div className="mt-5 grid gap-4 lg:grid-cols-2">
@@ -392,4 +426,9 @@ function formatErpAnswer(fieldId: (typeof erpEvaluationFields)[number]["id"], er
   const field = erpEvaluationFields.find((item) => item.id === fieldId);
   const option = field?.options.find((item) => item.score === score);
   return option ? `${option.score}/5 - ${option.label}` : "Not assessed";
+}
+
+function formatIsoAnswer(score: IsoDisciplineScore | undefined): string {
+  const option = isoDisciplineOptions.find((item) => item.score === score);
+  return option ? `${option.score}% - ${option.label}` : "Not assessed";
 }
